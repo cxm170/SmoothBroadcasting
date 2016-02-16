@@ -1,0 +1,106 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<SwitchPreference-->
+        <!--android:defaultValue="true"-->
+        <!--android:key="example_switch"-->
+        <!--android:summary="@string/pref_description_social_recommendations"-->
+        <!--android:title="@string/pref_title_social_recommendations" />-->
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <!--<EditTextPreference-->
+        <!--android:capitalize="words"-->
+        <!--android:defaultValue="@string/pref_default_display_name"-->
+        <!--android:inputType="textCapWords"-->
+        <!--android:key="example_text"-->
+        <!--android:maxLines="1"-->
+        <!--android:selectAllOnFocus="true"-->
+        <!--android:singleLine="true"-->
+        <!--android:title="@string/pref_title_display_name" />-->
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <!--<ListPreference-->
+        <!--android:defaultValue="-1"-->
+        <!--android:entries="@array/pref_example_list_titles"-->
+        <!--android:entryValues="@array/pref_example_list_values"-->
+        <!--android:key="example_list"-->
+        <!--android:negativeButtonText="@null"-->
+        <!--android:positiveButtonText="@null"-->
+        <!--android:title="@string/pref_title_add_friends_to_messages" />-->
+
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_method_index_titles"
+        android:entryValues="@array/pref_method_index_values"
+        android:key="method_index"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Method" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/pref_unit_video_delay_titles"
+        android:entryValues="@array/pref_unit_video_delay_values"
+        android:key="unit_video_delay"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Unit Video Delay" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/pref_average_delay_titles"
+        android:entryValues="@array/pref_average_delay_values"
+        android:key="average_delay"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Average Delay" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/pref_init_delay_titles"
+        android:entryValues="@array/pref_init_delay_values"
+        android:key="init_delay"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Initialization Delay" />
+
+    <ListPreference
+        android:defaultValue="5"
+        android:entries="@array/pref_prediction_window_titles"
+        android:entryValues="@array/pref_prediction_window_values"
+        android:key="prediction_window"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Prediction Window Size" />
+
+    <ListPreference
+        android:defaultValue="60"
+        android:entries="@array/pref_live_streaming_duration_titles"
+        android:entryValues="@array/pref_live_streaming_duration_values"
+        android:key="live_streaming_duration"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Live Streaming Duration" />
+
+    <ListPreference
+        android:defaultValue="5"
+        android:entries="@array/pref_live_streaming_interval_titles"
+        android:entryValues="@array/pref_live_streaming_interval_values"
+        android:key="live_streaming_interval"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Live Streaming Interval" />
+
+    <ListPreference
+        android:defaultValue="1000000"
+        android:entries="@array/pref_v_titles"
+        android:entryValues="@array/pref_v_values"
+        android:key="v"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="V" />
+
+
+</PreferenceScreen>
