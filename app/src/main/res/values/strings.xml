@@ -162,30 +162,40 @@
     </string-array>
 
     <string-array name="pref_v_titles">
-        <item>1000000</item>
-        <item>2000000</item>
-        <item>3000000</item>
-        <item>4000000</item>
-        <item>5000000</item>
-        <item>6000000</item>
+        <item>10000</item>
+        <item>20000</item>
+        <item>30000</item>
+        <item>40000</item>
+        <item>50000</item>
+        <item>60000</item>
+        <item>70000</item>
+        <item>80000</item>
+        <item>90000</item>
+        <item>100000</item>
     </string-array>
     <string-array name="pref_v_values">
-        <item>1000000</item>
-        <item>2000000</item>
-        <item>3000000</item>
-        <item>4000000</item>
-        <item>5000000</item>
-        <item>6000000</item>
+        <item>10000</item>
+        <item>20000</item>
+        <item>30000</item>
+        <item>40000</item>
+        <item>50000</item>
+        <item>60000</item>
+        <item>70000</item>
+        <item>80000</item>
+        <item>90000</item>
+        <item>100000</item>
     </string-array>
 
 
     <string-array name="pref_method_index_titles">
+        <item>144p</item>
         <item>360p</item>
         <item>480p</item>
-        <item>unweighted</item>
-        <item>weighted</item>
-        <item>ResoMax</item>
+        <item>720p</item>
+        <item>1080p</item>
         <item>480p with pre</item>
+        <item>720p with pre</item>
+        <item>1080p with pre</item>
         <item>ResoMax with pre</item>
     </string-array>
     <string-array name="pref_method_index_values">
@@ -196,6 +206,8 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>8</item>
+        <item>9</item>
     </string-array>
 
 

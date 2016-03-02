@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -30,9 +31,12 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -53,18 +57,22 @@ public class LiveStreamingStatusActivity extends AppCompatActivity {
 
     public static TextView textView2;
 
+    public static TextView textView3;
+
     private int methodIndex;
 
     private static final int RESULT_SETTINGS = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         textView = (TextView) findViewById(R.id.textView);
 
         textView2 = (TextView) findViewById(R.id.textView2);
+
+        textView3 = (TextView) findViewById(R.id.textView3);
 
 
         button = (Button) findViewById(R.id.button);
@@ -180,6 +188,62 @@ public class LiveStreamingStatusActivity extends AppCompatActivity {
                     textView.append("Average bandwidth: " + averageBandwidth + "\n");
                     textView.append("Decision times: " + Statistics.throughputs.size() + "\n");
                     textView.append("Preprocessing times:" + Statistics.throughputChanges.size());
+
+                    textView3.setText("Final Results: saved. " + "\n");
+
+                    StringBuilder savedString = new StringBuilder();
+                    savedString.append("----------------------" + "\n");
+                    savedString.append("The number of video segments: " + Statistics.historicalBandwidths.size() + "\n");
+                    savedString.append("Method: " + methodIndex + "\n");
+                    savedString.append("Cellular bandwidth every interval: " + "\n");
+                    for(int i=0;i<Statistics.bandwidthsEveryInterval.size();i++)
+                        savedString.append(Statistics.bandwidthsEveryInterval.get(i)+" ");
+
+                    savedString.append("\n\n" + "Cellular bandwidth every video: " + "\n");
+                    for(int i=0;i<Statistics.historicalBandwidths.size();i++)
+                        savedString.append(Statistics.historicalBandwidths.get(i) + " ");
+
+                    savedString.append("\n\n" + "Delays: " + "\n");
+                    for(int i=0;i<Statistics.delayTimes.size();i++)
+                        savedString.append(Statistics.delayTimes.get(i) + " ");
+
+                    savedString.append("\n\n" + "Preprocessing: " + "\n");
+                    savedString.append(Statistics.throughputChanges);
+
+
+                    double temp_sum=0;
+                    for(int i=0; i < Statistics.arrivalTimes.size();i++){
+                        temp_sum += Statistics.arrivalTimes.get(i) - Statistics.startTimes.get(i);
+                    }
+//                    Log.e("error", "arrival time: " + Statistics.arrivalTimes);
+//                    Log.e("error", "start time: " + Statistics.startTimes);
+                    savedString.append("\n\n" + "Overall transmission time: " + temp_sum + "\n");
+
+
+                    savedString.append("\n\n");
+
+                    textView3.append(savedString.toString());
+
+
+                    try {
+
+
+                        File myFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "output.txt");
+                        if(!myFile.exists()) myFile.createNewFile();
+                        FileOutputStream fOut = new FileOutputStream(myFile, true);
+                        OutputStreamWriter myOutWriter =
+                                new OutputStreamWriter(fOut);
+                        myOutWriter.append(savedString.toString());
+                        myOutWriter.close();
+                        fOut.close();
+                        Toast.makeText(getBaseContext(),
+                                "Done writing SD 'mysdfile.txt'",
+                                Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getBaseContext(), e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
 
                 } else
                     textView.setText("No results yet");
@@ -311,6 +375,8 @@ public class LiveStreamingStatusActivity extends AppCompatActivity {
         reader.read(buffer);
         return new String(buffer);
     }
+
+
 
 
 }

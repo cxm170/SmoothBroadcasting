@@ -43,12 +43,16 @@ public class LiveStreamingRunnable implements Runnable {
 
     public final static int METHOD_1 = 1;   //360p
     public final static int METHOD_2 = 2;   //480p
-    public final static int METHOD_3 = 3;   //unweighted
-    public final static int METHOD_4 = 4;   //weighted
-    public final static int METHOD_5 = 5;   //ResoMax
+    public final static int METHOD_3 = 3;
+    public final static int METHOD_4 = 4;
+    public final static int METHOD_5 = 5;
 
-    public final static int METHOD_6 = 6;   //480p with preprecessing
-    public final static int METHOD_7 = 7;   //ResoMax with preprocessing
+    public final static int METHOD_6 = 6;
+    public final static int METHOD_7 = 7;
+
+    public final static int METHOD_8 = 8;
+
+    public final static int METHOD_9 = 9;
 
     private int methodIndex;
 
@@ -80,7 +84,7 @@ public class LiveStreamingRunnable implements Runnable {
         this.bandwidthPredictionWindow = bandwidthPredictionWindow;
         this.methodIndex = methodIndex;
         this.resolutionChoiceIndex = 3;
-        this.v = 40000;
+        this.v = v;
 
         countHigherBitrate = 0;
         countLowerBitrate = 0;
@@ -88,7 +92,7 @@ public class LiveStreamingRunnable implements Runnable {
         lastAddedTimeForLowerBitrate = -1;
 //        Log.e("error", "live streaming runnable works");
 
-        if (methodIndex == METHOD_6 || methodIndex == METHOD_7) isPreprocessingEnabled = true;
+        if (methodIndex == METHOD_6 || methodIndex == METHOD_7  || methodIndex == METHOD_8 || methodIndex == METHOD_9) isPreprocessingEnabled = true;
         else isPreprocessingEnabled = false;
 
         updatePreprocessingIndexTable();
@@ -168,18 +172,22 @@ public class LiveStreamingRunnable implements Runnable {
     private int makeDecisionAtCurrentTime(double currentTime, int method) {
         switch (method) {
             case METHOD_1:
-                return decisionAtTime360p();
+                return decisionAtTime144p();
             case METHOD_2:
-                return decisionAtTime480p();
+                return decisionAtTime360p();
             case METHOD_3:
-                return decisionAtTimeUnweighted(currentTime);
+                return decisionAtTime480p();
             case METHOD_4:
-                return decisionAtTimeWeighted(currentTime);
+                return decisionAtTime720p();
             case METHOD_5:
-                return decisionAtTimeResoMax(currentTime);
+                return decisionAtTime1080p();
             case METHOD_6:
                 return decisionAtTime480p();
             case METHOD_7:
+                return decisionAtTime720p();
+            case METHOD_8:
+                return decisionAtTime1080p();
+            case METHOD_9:
                 return decisionAtTimeResoMax(currentTime);
             default:
                 return 0;
@@ -187,6 +195,18 @@ public class LiveStreamingRunnable implements Runnable {
 
 
     }
+
+    //channel aware algorithm, Method 1
+    public int decisionAtTime144p() {
+
+        Statistics.decisions.add(1);
+        Statistics.throughputs.add(Statistics._144P_throughput);
+        Statistics.resolutions.add(144);
+
+
+        return Statistics.decisions.getLast();
+    }
+
 
     //channel aware algorithm, Method 1
     public int decisionAtTime360p() {
@@ -205,6 +225,28 @@ public class LiveStreamingRunnable implements Runnable {
         Statistics.decisions.add(4);
         Statistics.throughputs.add(Statistics._480P_throughput);
         Statistics.resolutions.add(480);
+
+
+        return Statistics.decisions.getLast();
+    }
+
+    //channel aware algorithm, Method 2
+    public int decisionAtTime720p() {
+
+        Statistics.decisions.add(5);
+        Statistics.throughputs.add(Statistics._720P_throughput);
+        Statistics.resolutions.add(720);
+
+
+        return Statistics.decisions.getLast();
+    }
+
+    //channel aware algorithm, Method 2
+    public int decisionAtTime1080p() {
+
+        Statistics.decisions.add(6);
+        Statistics.throughputs.add(Statistics._1080P_throughput);
+        Statistics.resolutions.add(1080);
 
 
         return Statistics.decisions.getLast();
@@ -419,14 +461,14 @@ public class LiveStreamingRunnable implements Runnable {
 
         Log.e("error", "countHigherBitrate: " + countHigherBitrate + " countLowerBitrate: " + countLowerBitrate);
 
-        if (countLowerBitrate >= 4) {
+        if (countLowerBitrate >= 4*Math.sqrt(resolutionChoiceIndex+1)) {
             countLowerBitrate = 0;
             lastAddedTimeForLowerBitrate = -1;
             if (resolutionChoiceIndex > 0) resolutionChoiceIndex--;
         }
 
         //change 5 to 4, if higher resolution is preferred
-        if (countHigherBitrate >= 4) {
+        if (countHigherBitrate >= 5*Math.sqrt(resolutionChoiceIndex+1)) {
             countHigherBitrate = 0;
             lastAddedTimeForHigherBitrate = -1;
             if (resolutionChoiceIndex < 5) resolutionChoiceIndex++;
